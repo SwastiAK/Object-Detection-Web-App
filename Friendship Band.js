@@ -1,4 +1,5 @@
 img = "Friendship Band.jpg";
+objects = [];
 status = "";
 
 function preload()
@@ -27,15 +28,24 @@ function gotResult(error, results)
         console.log(error);
     }
     console.log(results);
+    objects = results;
 }
 
 function draw()
 {
     image(img, 0, 0, 640, 420);
-    fill("#000057");
-    text("Friendship Band", 45, 75);
-    noFill();
-    stroke("#000057");
-    strokeWeight(2);
-    rect(30, 60, 450, 350);
+    
+    if(status != "")
+    {
+        for(i = 0; i < objects.length; i++)
+        {
+            document.getElementById("status").innerHTML = "Status: Detecting Objects";
+            fill("#20124d");
+            percent = floor(objects[i].confidence * 100);
+            text(objects[i].label + "  " + percent + "%", objects[i].x + 15, objects[i].y + 15);
+            noFill();
+            stroke("#20124d");
+            rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+        }
+    }
 }
